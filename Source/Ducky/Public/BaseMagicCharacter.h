@@ -10,7 +10,9 @@
 //forward declarations
 class UCameraComponent;
 class USpringArmComponent;
-
+class UInputMappingContext;
+class UInputAction;
+struct FInputActionValue;
 
 UCLASS()
 class DUCKY_API ABaseMagicCharacter : public ACharacter
@@ -25,7 +27,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
+	// Function to print problems
+	virtual void ValidateSetup(const FString &Value)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, FString::Printf(TEXT("Issue in cpp with: %s"),*Value));
+	}
+	
 	void Shoot();
+	void Move(const FInputActionValue &Value);
 	
 	UPROPERTY(EditAnywhere)
 	UChildActorComponent* Weapon;
@@ -35,6 +44,14 @@ protected:
 	
 	UPROPERTY(EditAnywhere)
 	USpringArmComponent* CameraBoom;
+	
+	UPROPERTY(EditAnywhere)
+	UInputMappingContext* InputMapping;
+
+	UPROPERTY(EditAnywhere)
+	UInputAction* IA_Move;
+	
+	
 	
 	
 public:	

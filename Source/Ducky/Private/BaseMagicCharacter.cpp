@@ -1,21 +1,23 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "BaseMagicCharacter.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "InputActionValue.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Engine/Engine.h"
 
-// Sets default values
+// Constructor
 ABaseMagicCharacter::ABaseMagicCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
-	//Weapon/SocketWeapon
+	// Weapon / SocketWeapon
 	Weapon = CreateDefaultSubobject<UChildActorComponent>(TEXT("Weapon"));
 	Weapon->SetupAttachment(GetMesh(), TEXT("WeaponSocket"));
 	
-	//Camera/springArm
+	// Camera / SpringArm
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
@@ -26,11 +28,37 @@ ABaseMagicCharacter::ABaseMagicCharacter()
 void ABaseMagicCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	// Get PlayerController
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	if(!PC) ValidateSetup(TEXT("PlayerController"));
+
+	// Get Subsystem of the Local Player
+	UEnhancedInputLocalPlayerSubsystem* Subsystem =
+		ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(
+			PC->GetLocalPlayer());
+
+	if (!Subsystem) ValidateSetup(TEXT("Subsystem"));
+	if (!InputMapping) ValidateSetup(TEXT("InputMapping"));
+
+	Subsystem->AddMappingContext(InputMapping, 0);
+	
 }
 
 void ABaseMagicCharacter::Shoot()
 {
 	
+}
+
+void ABaseMagicCharacter::Move(const FInputActionValue& Value)
+{
+	FVector2D Input  = Value.Get<FVector2D>();
+	
+	if (Controller == nullptr) ValidateSetup(TEXT("Controller"));
+	
+	// Adding Movement Inputs
+	AddMovementInput(GetActorForwardVector(), Input.Y);
+	AddMovementInput(GetActorRightVector(), Input.X);
 }
 
 
@@ -45,6 +73,11 @@ void ABaseMagicCharacter::Tick(float DeltaTime)
 void ABaseMagicCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	
+	UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+	if(!EIC) return;
+	
+	EIC->BindAction(IA_Move, ETriggerEvent::Triggered, this, &ABaseMagicCharacter::Move);
 	
 
 }
