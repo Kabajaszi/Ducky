@@ -52,13 +52,23 @@ void ABaseMagicCharacter::Shoot()
 
 void ABaseMagicCharacter::Move(const FInputActionValue& Value)
 {
-	FVector2D Input  = Value.Get<FVector2D>();
+	FVector2D Input = Value.Get<FVector2D>();
 	
 	if (Controller == nullptr) ABaseMagicCharacter::ValidateSetup(TEXT("Controller"));
 	
 	// Adding Movement Inputs
 	AddMovementInput(GetActorForwardVector(), Input.Y);
 	AddMovementInput(GetActorRightVector(), Input.X);
+}
+
+void ABaseMagicCharacter::Look(const FInputActionValue &Value)
+{
+	FVector2D Input = Value.Get<FVector2D>();
+	
+	if (Controller == nullptr) ABaseMagicCharacter::ValidateSetup(TEXT("Controller"));
+	
+	AddControllerYawInput(Input.X);
+	AddControllerPitchInput(Input.Y); //jesli niema negate w IA trzeba dac -Input.Y
 }
 
 // Called every frame
@@ -78,7 +88,5 @@ void ABaseMagicCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	EIC->BindAction(MoveInput, ETriggerEvent::Triggered, this, &ABaseMagicCharacter::Move);
 	EIC->BindAction(JumpInput, ETriggerEvent::Started, this, &ACharacter::Jump);
 	EIC->BindAction(JumpInput, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
-	
-
+	EIC->BindAction(LookInput, ETriggerEvent::Triggered, this, &ABaseMagicCharacter::Look);
 }
-

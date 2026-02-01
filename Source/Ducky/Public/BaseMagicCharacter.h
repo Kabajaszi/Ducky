@@ -1,11 +1,8 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "BaseMagicCharacter.generated.h"
-
 
 //forward declarations
 class UCameraComponent;
@@ -35,6 +32,7 @@ protected:
 	
 	void Shoot();
 	void Move(const FInputActionValue &Value);
+	void Look(const FInputActionValue &Value);
 	
 	UPROPERTY(EditAnywhere)
 	UChildActorComponent* Weapon;
@@ -53,6 +51,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere)
 	UInputAction* JumpInput;
+	
+	UPROPERTY(EditAnywhere)
+	UInputAction* LookInput;
 	
 	
 	
