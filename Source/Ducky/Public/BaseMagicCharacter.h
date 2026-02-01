@@ -19,16 +19,16 @@ class DUCKY_API ABaseMagicCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ABaseMagicCharacter();
+	
+	void ValidateSetup(const FString &Value)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, FString::Printf(TEXT("Issue in cpp with: %s"),*Value));
+	}
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
-	// Function to print problems
-	virtual void ValidateSetup(const FString &Value)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, FString::Printf(TEXT("Issue in cpp with: %s"),*Value));
-	}
 	
 	void Shoot();
 	void Move(const FInputActionValue &Value);
