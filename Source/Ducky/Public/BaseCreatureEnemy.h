@@ -6,8 +6,7 @@
 #include "GameFramework/Character.h"
 #include "BaseCreatureEnemy.generated.h"
 
-//class AAIController;
-//class ABaseMagicCharacter;
+class ABaseMagicCharacter;
 
 UCLASS()
 class DUCKY_API ABaseCreatureEnemy : public ACharacter
@@ -22,11 +21,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
-	//UPROPERTY(EditAnywhere)
-	//ABaseMagicCharacter* PlayerRef = nullptr;
-	
-	//UPROPERTY(EditAnywhere)
-	//AAIController* AI;
+	UPROPERTY(EditAnywhere)
+	ABaseMagicCharacter* PlayerRef = nullptr;
 
 public:	
 	// Called every frame

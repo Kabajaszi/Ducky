@@ -2,13 +2,23 @@
 
 
 #include "BaseCreatureEnemy.h"
+#include "AIController.h"
 #include "BaseMagicCharacter.h"
+#include "NavigationSystem.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Navigation/PathFollowingComponent.h"
 
 // Sets default values
 ABaseCreatureEnemy::ABaseCreatureEnemy()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	bUseControllerRotationYaw = false;
+	
+	GetCharacterMovement()->MaxWalkSpeed = 200.f;
 
 }
 
@@ -17,7 +27,7 @@ void ABaseCreatureEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	//PlayerRef = Cast<ABaseMagicCharacter>(UGameplayStatics::GetPlayerCharacter(this,0));
+	PlayerRef = Cast<ABaseMagicCharacter>(UGameplayStatics::GetPlayerCharacter(this,0));
 	
 }
 
@@ -26,9 +36,16 @@ void ABaseCreatureEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	//AI = Cast<AAIController>(GetController());
-	//if (!AI) return;
-	//dokonczyc cpp ->
+	AAIController* AI = Cast<AAIController>(GetController());
+	if (!AI) return;
+	
+	FAIMoveRequest MoveReq;
+	MoveReq.SetGoalActor(PlayerRef);
+	MoveReq.SetAcceptanceRadius(200.f);
+	
+	FNavPathSharedPtr NavPath;
+	
+	AI->MoveTo(MoveReq, &NavPath);
 }
 
 // Called to bind functionality to input
