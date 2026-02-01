@@ -31,17 +31,17 @@ void ABaseMagicCharacter::BeginPlay()
 	
 	// Get PlayerController
 	APlayerController* PC = Cast<APlayerController>(GetController());
-	if(!PC) ValidateSetup(TEXT("PlayerController"));
+	if(!PC) ABaseMagicCharacter::ValidateSetup(TEXT("PlayerController"));
 
 	// Get Subsystem of the Local Player
 	UEnhancedInputLocalPlayerSubsystem* Subsystem =
 		ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(
 			PC->GetLocalPlayer());
 
-	if (!Subsystem) ValidateSetup(TEXT("Subsystem"));
-	if (!InputMapping) ValidateSetup(TEXT("InputMapping"));
+	if (!Subsystem) ABaseMagicCharacter::ValidateSetup(TEXT("Subsystem"));
+	if (!MappingInput) ABaseMagicCharacter::ValidateSetup(TEXT("InputMapping"));
 
-	Subsystem->AddMappingContext(InputMapping, 0);
+	Subsystem->AddMappingContext(MappingInput, 0);
 	
 }
 
@@ -54,14 +54,12 @@ void ABaseMagicCharacter::Move(const FInputActionValue& Value)
 {
 	FVector2D Input  = Value.Get<FVector2D>();
 	
-	if (Controller == nullptr) ValidateSetup(TEXT("Controller"));
+	if (Controller == nullptr) ABaseMagicCharacter::ValidateSetup(TEXT("Controller"));
 	
 	// Adding Movement Inputs
 	AddMovementInput(GetActorForwardVector(), Input.Y);
 	AddMovementInput(GetActorRightVector(), Input.X);
 }
-
-
 
 // Called every frame
 void ABaseMagicCharacter::Tick(float DeltaTime)
@@ -77,7 +75,9 @@ void ABaseMagicCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	if(!EIC) return;
 	
-	EIC->BindAction(IA_Move, ETriggerEvent::Triggered, this, &ABaseMagicCharacter::Move);
+	EIC->BindAction(MoveInput, ETriggerEvent::Triggered, this, &ABaseMagicCharacter::Move);
+	EIC->BindAction(JumpInput, ETriggerEvent::Started, this, &ACharacter::Jump);
+	EIC->BindAction(JumpInput, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 	
 
 }

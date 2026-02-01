@@ -46,10 +46,13 @@ protected:
 	USpringArmComponent* CameraBoom;
 	
 	UPROPERTY(EditAnywhere)
-	UInputMappingContext* InputMapping;
+	UInputMappingContext* MappingInput;
 
 	UPROPERTY(EditAnywhere)
-	UInputAction* IA_Move;
+	UInputAction* MoveInput;
+	
+	UPROPERTY(EditAnywhere)
+	UInputAction* JumpInput;
 	
 	
 	
