@@ -22,6 +22,7 @@ ABaseMagicCharacter::ABaseMagicCharacter()
 	CameraBoom->SetupAttachment(RootComponent);
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraBoom);
+	
 }
 
 // Called when the game starts or when spawned
@@ -42,6 +43,7 @@ void ABaseMagicCharacter::BeginPlay()
 	if (!MappingInput) ABaseMagicCharacter::ValidateSetup(TEXT("InputMapping"));
 
 	Subsystem->AddMappingContext(MappingInput, 0);
+	
 	
 }
 
