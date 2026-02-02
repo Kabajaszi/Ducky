@@ -22,11 +22,19 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
+<<<<<<< Updated upstream
 	//UPROPERTY(EditAnywhere)
 	//ABaseMagicCharacter* PlayerRef = nullptr;
 	
 	//UPROPERTY(EditAnywhere)
 	//AAIController* AI;
+=======
+	UPROPERTY(EditAnywhere)
+	ABaseMagicCharacter* PlayerRef = nullptr;
+	
+	UPROPERTY(BlueprintReadWrite)
+	float Health;
+>>>>>>> Stashed changes
 
 public:	
 	// Called every frame

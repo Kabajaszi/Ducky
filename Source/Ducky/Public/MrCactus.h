@@ -13,5 +13,9 @@ UCLASS()
 class DUCKY_API AMrCactus : public ABaseCreatureEnemy
 {
 	GENERATED_BODY()
+AMrCactus();
+protected:
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	float MaxHealth;
 	
 };
