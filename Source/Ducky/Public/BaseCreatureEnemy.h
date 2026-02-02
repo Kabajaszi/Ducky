@@ -35,6 +35,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	float Health;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
