@@ -19,6 +19,9 @@ ABaseCreatureEnemy::ABaseCreatureEnemy()
 	GetCharacterMovement()->MaxWalkSpeed = 200.f;
 	
 	
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }
 
